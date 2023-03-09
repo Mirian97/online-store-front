@@ -1,19 +1,32 @@
-import { useNavigate } from "react-router-dom";
-import useGlobal from "./useGlobal";
+import api from '../services/api'
+import { messageError } from '../utils/toast'
+import useGlobal from './useGlobal'
 
 function useRequests() {
-  const navigate = useNavigate();
-  const {
-    setHeroContent,
-    setArticle,
-    search,
-    setArticles,
-    setTotalPages,
-    orderByRelevance,
-    currentPage,
-  } = useGlobal();
+  const { setProducts, setCurrentProduct } = useGlobal()
 
-  return {};
+  async function getProducts() {
+    try {
+      const { data } = await api.get('/produtos')
+      setProducts(data)
+    } catch (error) {
+      messageError('Não foi possível carregar os produtos')
+    }
+  }
+
+  async function getProduct(id) {
+    try {
+      const { data } = await api.get(`/produtos/${id}`)
+      setCurrentProduct(data)
+    } catch (error) {
+      messageError('Não foi possível carregar o produto')
+    }
+  }
+
+  return {
+    getProducts,
+    getProduct
+  }
 }
 
-export default useRequests;
+export default useRequests

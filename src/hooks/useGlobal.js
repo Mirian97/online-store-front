@@ -1,15 +1,8 @@
-import { createContext } from "react";
-import useGlobalProvider from "../hooks/useGlobalProvider";
+import { useContext } from 'react'
+import GlobalContext from '../contexts/GlobalContext'
 
-const GlobalContext = createContext();
-
-export function GlobalProvider(props) {
-  const globalProvider = useGlobalProvider();
-  return (
-    <GlobalContext.Provider value={globalProvider}>
-      {props.children}
-    </GlobalContext.Provider>
-  );
+function useGlobal() {
+  return useContext(GlobalContext)
 }
 
-export default GlobalContext;
+export default useGlobal
